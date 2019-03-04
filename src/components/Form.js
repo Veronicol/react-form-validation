@@ -8,7 +8,8 @@ export default class Form extends Component {
 
     this.state = {
       email : '',
-      error: true
+      error: true,
+      touch: false
     }
   }
 
@@ -22,19 +23,24 @@ export default class Form extends Component {
   }
   
   handleChange = (event) => {
-    console.log(this.state.error)
     this.setState({
       email: event.target.value,
       error:  !validator.test(event.target.value)
     })
   }
 
+  handleValidate = (event => {
+    this.setState({
+      touch: true
+    })
+  })
+
   render = () => (
     <form className="Form" onSubmit={this.handleSubmit}>
       <div className="field">
         <label className="label">email</label>
         <div className="control has-icons-left has-icons-right">
-          <input className="input is-success" type="text" placeholder="Text input" value={this.state.email} onChange={this.handleChange}/>
+          <input className="input is-success" type="text" placeholder="Text input" value={this.state.email} onChange={this.handleChange} onBlur={this.handleValidate}/>
           <span className="icon is-small is-left">
             <i className="fas fa-user"></i>
           </span>
@@ -43,8 +49,8 @@ export default class Form extends Component {
             <i className="fas fa-check"></i>
           </span>
         </div>
-        { ( this.state.error === false ) && <p className="help is-success">This email is available</p> }
-        { ( this.state.error === true ) && <p className="help is-danger">This email is invalid</p> }
+        { ( this.state.error === false && this.state.touch === true ) && <p className="help is-success">This email is available</p> }
+        { ( this.state.error === true && this.state.touch === true ) && <p className="help is-danger">This email is invalid</p> }
       </div>
 
       <div className="control">
