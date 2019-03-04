@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+const validator = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+
 export default class Form extends Component {
   constructor (props) {
     super(props);
@@ -8,10 +10,6 @@ export default class Form extends Component {
       email : '',
       error: true
     }
-  }
-
-  validator = {
-    email: v =>/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(String(v).toLowerCase())
   }
 
   handleSubmit = (event) => {
@@ -24,13 +22,10 @@ export default class Form extends Component {
   }
   
   handleChange = (event) => {
-    let newError = false;
-    if ( !this.validator.email ) {
-      newError = true;
-    }
+    console.log(this.state.error)
     this.setState({
       email: event.target.value,
-      error: newError
+      error:  !validator.test(event.target.value)
     })
   }
 
